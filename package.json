@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "npx serve . -l 4173",
-    "start": "npx serve . -l 4173"
+    "start": "npx serve . -l 4173",
+    "deploy": "npx wrangler pages deploy . --project-name couple-studio --branch main"
   }
 }

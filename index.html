@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f1eb" />
+    <meta name="description" content="Vowly turns two ordinary photos into cinematic couple portraits and short love stories." />
+    <meta property="og:title" content="Vowly - Couple photo and video studio" />
+    <meta property="og:description" content="Create cinematic couple portraits and short videos from two photos." />
+    <title>Vowly - Couple studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Vowly home">
+          <span class="brand-mark">V</span>
+          <span class="brand-name">vowly</span>
+        </a>
+        <nav class="main-nav" aria-label="Main navigation">
+          <a class="active" href="#studio">Create</a>
+          <a href="#styles">Styles</a>
+          <a href="#gallery">Gallery</a>
+        </nav>
+        <div class="account-actions">
+          <span class="credit-pill"><i data-lucide="sparkles" aria-hidden="true"></i><b>12</b> credits</span>
+          <button class="avatar-button" aria-label="Open account menu">AM</button>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="workspace" id="studio">
+          <div class="workspace-heading">
+            <div>
+              <div class="eyebrow"><span class="live-dot"></span> Private workspace</div>
+              <h1>Turn two photos<br /><em>into a story.</em></h1>
+              <p class="intro">Make the kind of couple photos you wish you had. Start with two faces, then choose a feeling.</p>
+            </div>
+            <div class="heading-note"><span>01</span><span class="note-line"></span><span>Couple studio</span></div>
+          </div>
+
+          <div class="studio-grid">
+            <section class="control-panel" aria-label="Generation controls">
+              <div class="section-label">01 / Format</div>
+              <div class="mode-switch" role="tablist" aria-label="Output format">
+                <button class="mode-button active" data-mode="photo" role="tab" aria-selected="true"><i data-lucide="image" aria-hidden="true"></i><span>Photo</span><small>4K portrait</small></button>
+                <button class="mode-button" data-mode="video" role="tab" aria-selected="false"><i data-lucide="clapperboard" aria-hidden="true"></i><span>Video</span><small>5 sec story</small></button>
+              </div>
+
+              <div class="section-label">02 / Your photos</div>
+              <div class="upload-grid">
+                <label class="upload-card" for="person-one">
+                  <input id="person-one" type="file" accept="image/*" data-upload="one" />
+                  <span class="upload-number">A</span>
+                  <img class="upload-preview" data-preview="one" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=360&q=85" alt="Person one preview" />
+                  <span class="upload-overlay"><i data-lucide="upload" aria-hidden="true"></i> Replace</span>
+                  <span class="upload-meta"><strong>Person one</strong><small>JPG or PNG - up to 10MB</small></span>
+                </label>
+                <label class="upload-card" for="person-two">
+                  <input id="person-two" type="file" accept="image/*" data-upload="two" />
+                  <span class="upload-number">B</span>
+                  <img class="upload-preview" data-preview="two" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=360&q=85" alt="Person two preview" />
+                  <span class="upload-overlay"><i data-lucide="upload" aria-hidden="true"></i> Replace</span>
+                  <span class="upload-meta"><strong>Person two</strong><small>JPG or PNG - up to 10MB</small></span>
+                </label>
+              </div>
+
+              <label class="field-label" for="prompt">03 / Add a direction <span>optional</span></label>
+              <div class="prompt-wrap"><i data-lucide="pen-line" aria-hidden="true"></i><textarea id="prompt" rows="2" placeholder="e.g. walking through a Tuscan garden at golden hour"></textarea></div>
+
+              <div class="section-label styles-label" id="styles">04 / Pick a feeling</div>
+              <div class="style-list" role="list">
+                <button class="style-chip active" data-style="Editorial"><span class="style-swatch editorial"></span>Editorial</button>
+                <button class="style-chip" data-style="Sunset"><span class="style-swatch sunset"></span>Sunset glow</button>
+                <button class="style-chip" data-style="City night"><span class="style-swatch city"></span>City night</button>
+                <button class="style-chip" data-style="Coastal"><span class="style-swatch coastal"></span>Coastal</button>
+              </div>
+
+              <div class="detail-row">
+                <label class="select-field"><span>Frame</span><select id="ratio"><option value="4:5">4:5 Portrait</option><option value="9:16">9:16 Story</option><option value="16:9">16:9 Landscape</option></select></label>
+                <label class="select-field"><span>Lighting</span><select id="lighting"><option>Soft & warm</option><option>Clean daylight</option><option>Flash editorial</option></select></label>
+              </div>
+
+              <button class="generate-button" id="generate" type="button"><span class="button-icon"><i data-lucide="sparkles" aria-hidden="true"></i></span><span class="generate-label">Generate photo</span><span class="credit-cost">1 credit</span></button>
+              <div class="privacy-note"><i data-lucide="shield-check" aria-hidden="true"></i><span>Your photos are private and auto-deleted after 24 hours.</span></div>
+            </section>
+
+            <section class="preview-panel" aria-label="Output preview">
+              <div class="preview-topline"><div><span class="section-label">Output preview</span><span class="draft-status" id="draft-status"><span class="status-dot"></span> Ready to create</span></div><button class="icon-button" id="reset" type="button" aria-label="Reset project" title="Reset project"><i data-lucide="rotate-ccw" aria-hidden="true"></i></button></div>
+              <div class="result-card" id="result-card">
+                <img id="result-image" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=90" alt="Couple walking together in warm light" />
+                <div class="result-shade"></div>
+                <div class="result-copy"><span class="result-kicker">Vowly / Editorial</span><strong id="result-title">A little more<br />like forever.</strong><span class="result-meta">4:5 - soft & warm</span></div>
+                <div class="result-corner"><span>AI DRAFT</span><i data-lucide="arrow-up-right" aria-hidden="true"></i></div>
+                <div class="loading-state" id="loading-state" aria-live="polite"><span class="loader-ring"></span><strong>Creating your story</strong><span id="loading-copy">Composing the light and mood...</span></div>
+              </div>
+              <div class="result-toolbar"><div class="result-info"><span class="result-check"><i data-lucide="check" aria-hidden="true"></i></span><span><strong id="result-state">Sample preview</strong><small>Made with the Editorial preset</small></span></div><a class="download-button" id="download" href="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=90" download="vowly-couple-story.jpg"><i data-lucide="download" aria-hidden="true"></i> Download</a></div>
+              <div class="recent-header" id="gallery"><span class="section-label">Recent stories</span><button class="text-button" type="button">View all <i data-lucide="arrow-up-right" aria-hidden="true"></i></button></div>
+              <div class="recent-strip"><button class="recent-card active" data-image="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=90"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=320&q=80" alt="Warm couple portrait" /><span>Editorial</span></button><button class="recent-card" data-image="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1400&q=90"><img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=320&q=80" alt="Wedding couple portrait" /><span>Vows</span></button><button class="recent-card" data-image="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1400&q=90"><img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=320&q=80" alt="Wedding celebration" /><span>Afterglow</span></button><button class="recent-card add-card" type="button"><i data-lucide="plus" aria-hidden="true"></i><span>New story</span></button></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="proof-band">
+          <div class="proof-item"><span class="proof-icon"><i data-lucide="scan-face" aria-hidden="true"></i></span><span><strong>Faces stay yours</strong><small>Identity-aware generation that keeps the little details.</small></span></div>
+          <div class="proof-item"><span class="proof-icon"><i data-lucide="wand-sparkles" aria-hidden="true"></i></span><span><strong>Made for two</strong><small>Natural hands, eye-lines, and closeness in every frame.</small></span></div>
+          <div class="proof-item"><span class="proof-icon"><i data-lucide="heart-handshake" aria-hidden="true"></i></span><span><strong>Private by design</strong><small>Your uploads are never used to train public models.</small></span></div>
+        </section>
+      </main>
+
+      <section class="legal-notes" aria-label="Legal notes"><details id="privacy"><summary>Privacy</summary><p>Uploads are processed for your requested generation and removed from this demo workspace after 24 hours.</p></details><details id="terms"><summary>Terms</summary><p>Use only photos you have permission to edit. Generated previews are for personal creative use in this demo.</p></details></section>
+      <footer class="site-footer"><span>(c) 2026 Vowly studio</span><span class="footer-links"><a href="#privacy">Privacy</a><a href="#terms">Terms</a><a href="mailto:hello@vowly.studio">Contact</a></span><span class="footer-credit">Made for the moments you keep.</span></footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>

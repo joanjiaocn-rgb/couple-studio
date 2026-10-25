@@ -15,6 +15,8 @@ const ratio = document.querySelector('#ratio');
 const lighting = document.querySelector('#lighting');
 const download = document.querySelector('#download');
 const prompt = document.querySelector('#prompt');
+const selectedPhotos = new Set();
+const track = (eventName, parameters) => window.coupleAnalytics?.track(eventName, parameters);
 let currentMode = 'photo';
 let activeStyle = 'Editorial';
 let generated = false;
@@ -37,10 +39,17 @@ function setMode(mode) {
   creditCost.textContent = mode === 'video' ? '3 credits' : '1 credit';
 }
 
-modeButtons.forEach((button) => button.addEventListener('click', () => setMode(button.dataset.mode)));
+modeButtons.forEach((button) => button.addEventListener('click', () => {
+  if (currentMode === button.dataset.mode) return;
+  setMode(button.dataset.mode);
+  track('format_select', { output_format: currentMode });
+}));
 
 document.querySelectorAll('.style-chip').forEach((button) => {
   button.addEventListener('click', () => {
+    if (activeStyle !== button.dataset.style) {
+      track('style_select', { style: button.dataset.style, output_format: currentMode });
+    }
     activeStyle = button.dataset.style;
     document.querySelectorAll('.style-chip').forEach((chip) => chip.classList.toggle('active', chip === button));
     const preset = presets[activeStyle];
@@ -58,6 +67,11 @@ document.querySelectorAll('[data-upload]').forEach((input) => {
     const preview = document.querySelector(`[data-preview="${input.dataset.upload}"]`);
     preview.src = URL.createObjectURL(file);
     preview.onload = () => URL.revokeObjectURL(preview.src);
+    selectedPhotos.add(input.dataset.upload);
+    track('photo_select', {
+      photo_slot: input.dataset.upload,
+      selected_photo_count: selectedPhotos.size,
+    });
   });
 });
 
@@ -68,6 +82,16 @@ function setStatus(label, type = '') {
 
 generateButton.addEventListener('click', () => {
   if (generateButton.disabled) return;
+  const startedAt = performance.now();
+  track('generate_start', {
+    output_format: currentMode,
+    style: activeStyle,
+    aspect_ratio: ratio.value,
+    lighting: lighting.value,
+    has_prompt: Boolean(prompt.value.trim()),
+    selected_photo_count: selectedPhotos.size,
+    generation_type: 'demo',
+  });
   generateButton.disabled = true;
   generated = false;
   loadingState.classList.add('visible');
@@ -88,6 +112,14 @@ generateButton.addEventListener('click', () => {
     download.download = `vowly-${currentMode}-${activeStyle.toLowerCase().replaceAll(' ', '-')}.jpg`;
     generated = true;
     generateButton.disabled = false;
+    track('generate_complete', {
+      output_format: currentMode,
+      style: activeStyle,
+      aspect_ratio: ratio.value,
+      lighting: lighting.value,
+      generation_type: 'demo',
+      duration_ms: Math.round(performance.now() - startedAt),
+    });
   }, currentMode === 'video' ? 2400 : 1750);
 });
 
@@ -96,12 +128,15 @@ document.querySelectorAll('.recent-card[data-image]').forEach((card) => {
     document.querySelectorAll('.recent-card').forEach((item) => item.classList.remove('active'));
     card.classList.add('active');
     resultImage.src = card.dataset.image;
+    generated = false;
     setStatus('Ready to create', 'ready');
     resultState.textContent = 'Sample preview';
+    track('story_select', { story_name: card.querySelector('span').textContent });
   });
 });
 
 document.querySelector('#reset').addEventListener('click', () => {
+  track('project_reset', { output_format: currentMode });
   setMode('photo');
   activeStyle = 'Editorial';
   generated = false;
@@ -113,5 +148,12 @@ document.querySelector('#reset').addEventListener('click', () => {
   setStatus('Ready to create', 'ready');
   prompt.value = '';
 });
+
+ratio.addEventListener('change', () => track('frame_select', { aspect_ratio: ratio.value }));
+lighting.addEventListener('change', () => track('lighting_select', { lighting: lighting.value }));
+download.addEventListener('click', () => track('download_click', {
+  result_type: generated ? 'demo_preview' : 'sample',
+  output_format: currentMode,
+}));
 
 iconRefresh();
